@@ -3,6 +3,8 @@
  */
 package de.mctzock.keys;
 
+import de.mctzock.keys.annotation.Experimental;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -19,6 +21,12 @@ import java.util.Base64;
 
 public class RSAKeys {
 
+    /**
+     * Generate Keys
+     * @param size Keysize
+     * @return KeyPair
+     * @throws NoSuchAlgorithmException
+     */
     public static KeyPair gen(int size) throws NoSuchAlgorithmException {
         KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
         generator.initialize(size);
@@ -26,13 +34,37 @@ public class RSAKeys {
         return key;
     }
 
-    public static byte[] encrypt(String message, PublicKey pubKey) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException {
+    /**
+     * Encrypt a message
+     * @param message Message
+     * @param pubKey Public Key
+     * @return encrypted message as byte array
+     * @throws NoSuchPaddingException
+     * @throws NoSuchAlgorithmException
+     * @throws InvalidKeyException
+     * @throws BadPaddingException
+     * @throws IllegalBlockSizeException
+     * @throws InvalidAlgorithmParameterException
+     */
+    public static byte[] encrypt(String message, PublicKey pubKey) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
         Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING");
         cipher.init(Cipher.ENCRYPT_MODE, pubKey);
         byte[] enc = cipher.doFinal(message.getBytes());
         return enc;
     }
 
+    /**
+     * Decrypt message
+     * @param message encrypted message as byte array
+     * @param privKey Private Key
+     * @return decrypted Message as String
+     * @throws NoSuchPaddingException
+     * @throws NoSuchAlgorithmException
+     * @throws InvalidKeyException
+     * @throws BadPaddingException
+     * @throws IllegalBlockSizeException
+     * @throws InvalidAlgorithmParameterException
+     */
     public static String decrypt(byte[] message, PrivateKey privKey) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException {
         byte[] dec = null;
         Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPPadding");
@@ -42,6 +74,11 @@ public class RSAKeys {
         return new String(dec);
     }
 
+    /**
+     * Get Public Key from String. You can use this for reading the public key form a file.
+     * @param s Public Key as String
+     * @return Public Key Object
+     */
     public static PublicKey pubFromString(String s) {
         KeyFactory kf = null;
         try {
@@ -60,6 +97,12 @@ public class RSAKeys {
         return pubKey;
     }
 
+    /**
+     * Get Private Key from String. You can use this for reading the private key form a file.
+     * @param s Private Key as String
+     * @return Private Key Object
+     */
+    @Experimental
     public static PrivateKey privFromString(String s){
         KeyFactory kf = null;
         try {
