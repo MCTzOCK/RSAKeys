@@ -25,9 +25,9 @@ public class RSAKeys {
      * Generate Keys
      * @param size Keysize
      * @return KeyPair
-     * @throws NoSuchAlgorithmException
+     * @throws Exception if anything goes wrong
      */
-    public static KeyPair gen(int size) throws NoSuchAlgorithmException {
+    public static KeyPair gen(int size) throws Exception {
         KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
         generator.initialize(size);
         KeyPair key = generator.generateKeyPair();
@@ -39,14 +39,9 @@ public class RSAKeys {
      * @param message Message
      * @param pubKey Public Key
      * @return encrypted message as byte array
-     * @throws NoSuchPaddingException
-     * @throws NoSuchAlgorithmException
-     * @throws InvalidKeyException
-     * @throws BadPaddingException
-     * @throws IllegalBlockSizeException
-     * @throws InvalidAlgorithmParameterException
+     * @throws Exception if anything goes wrong
      */
-    public static byte[] encrypt(String message, PublicKey pubKey) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
+    public static byte[] encrypt(String message, PublicKey pubKey) throws Exception {
         Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING");
         cipher.init(Cipher.ENCRYPT_MODE, pubKey);
         byte[] enc = cipher.doFinal(message.getBytes());
@@ -58,14 +53,9 @@ public class RSAKeys {
      * @param message encrypted message as byte array
      * @param privKey Private Key
      * @return decrypted Message as String
-     * @throws NoSuchPaddingException
-     * @throws NoSuchAlgorithmException
-     * @throws InvalidKeyException
-     * @throws BadPaddingException
-     * @throws IllegalBlockSizeException
-     * @throws InvalidAlgorithmParameterException
+     * @throws Exception if anything goes wrong
      */
-    public static String decrypt(byte[] message, PrivateKey privKey) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException {
+    public static String decrypt(byte[] message, PrivateKey privKey) throws Exception {
         byte[] dec = null;
         Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPPadding");
         OAEPParameterSpec params = new OAEPParameterSpec("SHA-256", "MGF1", new MGF1ParameterSpec("SHA-1"), PSource.PSpecified.DEFAULT);
